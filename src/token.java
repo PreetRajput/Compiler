@@ -1,8 +1,20 @@
-class first
+class token
 {
-    public static void main(String[] args)
+   public  enum Type{
+        LET, IDENTIFIER, EQUALS, NUMBER,
+        PLUS, MINUS, MULTIPLY, DIVIDE,
+        SEMICOLON, PRINT, EOF, NEXTLINE
+    }
+    Type type;
+    String value;
+    public token(Type type, String value)
     {
-        String str = "Hello, World!";
-        System.out.println(str);
+        this.type= type;
+        this.value= value;
+    }
+    @Override
+    public String toString()
+    {
+        return "[" + type + (value!= null ? ":" + value : "") + "]";
     }
 }

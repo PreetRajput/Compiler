@@ -2,8 +2,7 @@ class token
 {
    public  enum Type{
         LET, IDENTIFIER, EQUALS, NUMBER,
-        PLUS, MINUS, MULTIPLY, DIVIDE,
-        SEMICOLON, PRINT, EOF, NEXTLINE
+       OPERATOR, SEMICOLON, PRINT, EOF, NEXTLINE, LEFT_PAREN, RIGHT_PAREN
     }
     Type type;
     String value;

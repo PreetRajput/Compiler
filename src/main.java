@@ -1,18 +1,31 @@
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class main {
     public static void main(String[] args) 
     {
         try {
-            String input = new String(Files.readAllBytes(Paths.get("SourceCode.txt")));  
+            String input = new String(Files.readAllBytes(Paths.get("src/SourceCode.txt")));  
             lexer obj= new lexer(input);
             List<token> tokens= obj.tokenize();
-            System.out.println(tokens.size());
+            
+            for(token eachToken: tokens)
+            {
+                System.out.println(eachToken);
+            }
+            parser obj2= new parser(tokens);
+            List<Node> Nodes= obj2.node();
+            for(Node node: Nodes)
+            {
+                System.out.println(node);
+            }
+
         } catch (Exception e) {
-            System.err.println("crazy error");
+            System.err.println("crazy error" + e.getMessage());
+             e.printStackTrace();
         }
     }
 }

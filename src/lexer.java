@@ -25,13 +25,13 @@ public class lexer {
                 {
                     tokens.add(new token(token.Type.LET, null));    
                 }
-                else if (word=="print")
+                else if (word.equalsIgnoreCase("print"))
                 {
                     tokens.add(new token(token.Type.PRINT, null));    
                 }
                 else
                 {
-                    tokens.add(new token(token.Type.IDENTIFIER, null));    
+                    tokens.add(new token(token.Type.IDENTIFIER, word));    
                 }
             }
             else if(Character.isDigit(currentChar))
@@ -41,28 +41,31 @@ public class lexer {
             }
             else if(currentChar=='+')
             {
-                tokens.add(new token(token.Type.PLUS, "+"));
+                tokens.add(new token(token.Type.OPERATOR, "+"));
                 advance();
             }else if (currentChar == '-') {
-                tokens.add(new token(token.Type.MINUS, null)); advance();
+                tokens.add(new token(token.Type.OPERATOR, "-")); advance();
             } else if (currentChar == '*') {
-                tokens.add(new token(token.Type.MULTIPLY, null)); advance();
+                tokens.add(new token(token.Type.OPERATOR, "*")); advance();
             } else if (currentChar == '/') {
-                tokens.add(new token(token.Type.DIVIDE, null)); advance();
+                tokens.add(new token(token.Type.OPERATOR, "/")); advance();
             } else if (currentChar == '=') {
-                tokens.add(new token(token.Type.EQUALS, null)); advance();
+                tokens.add(new token(token.Type.EQUALS, "=")); advance();
             }
             else if (currentChar == '\n') {
                 tokens.add(new token(token.Type.NEXTLINE, null)); advance();
-            }else {
+            }else if (currentChar == '(') {
+                tokens.add(new token(token.Type.LEFT_PAREN, null)); advance();
+            }else if (currentChar == ')') {
+                tokens.add(new token(token.Type.RIGHT_PAREN, null)); advance();
+            }
+            else {
                 System.out.println("Unknown character: " + currentChar);
                 advance();
              }
         }
-        tokens.add(new token(token.Type.EOF, null));
-            System.out.println(tokens.size());
-        
-        return tokens;
+             tokens.add(new token(token.Type.EOF, null));
+            return tokens;
     }
     public void skipWhiteSpace()
     {
@@ -93,7 +96,7 @@ public class lexer {
      void advance()
     {
         index++;
-        currentChar= input.charAt(index)!='\0'? input.charAt(index):'\0';
+        currentChar= index<input.length()? input.charAt(index):'\0';
     }
 
 }

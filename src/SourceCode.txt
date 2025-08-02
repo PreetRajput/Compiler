@@ -1,4 +1,6 @@
 let a=10
 let b= 3
-let c =5
+let d= 6
+let e = 12
+let c =a/b
 print(c)

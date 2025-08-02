@@ -23,6 +23,8 @@ public class main {
                 System.out.println(node);
             }
 
+            evaluater obj3 = new evaluater(Nodes);
+           
         } catch (Exception e) {
             System.err.println("crazy error" + e.getMessage());
              e.printStackTrace();

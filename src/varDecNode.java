@@ -5,14 +5,14 @@ public class varDecNode extends Node{
     public String varName;
     public String operation;
     public int i;
-    List<String> firstNumVal= new ArrayList<String>();
+    List<String> firstNumVal=new ArrayList<String>();
     List<String> alltheVaribalesInRHS= new ArrayList<String>();
     varDecNode(String varName, String operation, List<String> firstNumVal, List<String> alltheVaribalesInRHS)
     {
         this.varName= varName;
         this.operation= operation;
-        this.firstNumVal= firstNumVal;
-        this.alltheVaribalesInRHS= alltheVaribalesInRHS;
+        this.firstNumVal= new ArrayList<>(firstNumVal);
+        this.alltheVaribalesInRHS= new ArrayList<>(alltheVaribalesInRHS);
     }
     @Override
     public String toString()
@@ -22,7 +22,7 @@ public class varDecNode extends Node{
             if (operation!=null) 
             {
               
-                    return "let" + varName+ "=" +firstNumVal+ ""+operation;
+                    return "let" + varName+ "=" +alltheVaribalesInRHS+ ""+operation;
                 
             }
             else

@@ -8,7 +8,7 @@ public class parser
     StringBuilder valueOfIdentifier = new StringBuilder();
     String varName= null;
     String operation= null;
-    List<String> allTheVarVal= new ArrayList<String>();
+    List<String> allTheVarVal=  new ArrayList<String>();
     List<String> allTheVariablesInRHS= new ArrayList<String>();
     List<Node> allNodesList= new ArrayList<Node>();
                 
@@ -122,10 +122,6 @@ public class parser
                     if (tokens.get(pos).type==token.Type.NEXTLINE) 
                             {
                                 allNodesList.add(new varDecNode(varName, operation, allTheVarVal,allTheVariablesInRHS));
-                                for(Node node: allNodesList)
-                                    {
-                                        System.out.println(node);
-                                    }
                                 allTheVarVal.clear();
                                 allTheVariablesInRHS.clear();
                                 valueOfIdentifier.delete(0, valueOfIdentifier.length());

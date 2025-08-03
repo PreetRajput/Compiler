@@ -5,6 +5,7 @@ import java.util.Map;
 public class evaluater {
     Map<String, Integer> nodeValue= new HashMap<>();
     int sum=0;
+    binaryOP obj = new binaryOP();
     public evaluater(List<Node> nodes)
     {
         for (Node variable : nodes) 
@@ -22,59 +23,50 @@ public class evaluater {
         String varName= node.varName;
         int value=0;
         int trash=0;
-        int size = node.alltheVaribalesInRHS.size();
-        if (node.operation==null) {
-             value = Integer.parseInt(node.firstNumVal.get(0));
+        int left, right;
+        int trashForVar=1;
+        int size = node.operation.size();
+
+        if (size==0) 
+        {
+            try {
+                
+                value = Integer.parseInt(node.alltheVaribalesInRHS.get(0));
+            } catch (Exception e) {
+                value= nodeValue.get(node.alltheVaribalesInRHS.get(0));
+                // TODO: handle exception
+            }
         }
         else
         {
-            value=0;
-            while (size!=0) 
+            String currentToken= node.operation.get(0);
+            try {
+                left = Integer.parseInt(node.alltheVaribalesInRHS.get(0));
+            } catch (Exception e) {
+                left = nodeValue.get(node.alltheVaribalesInRHS.get(0));
+                }
+            while (currentToken == "+" || currentToken == "-" || currentToken == "*" || currentToken == "/") 
             {
-                
-                if (node.operation=="+") 
-                {
-                    value+=nodeValue.get(node.alltheVaribalesInRHS.get(size-1).toString());
-                }
-                else if(node.operation=="-")
-                {
-                    if(trash==0)
-                    {
-
-                        value=nodeValue.get(node.alltheVaribalesInRHS.get(trash).toString());
+                        try {
+                        right = Integer.parseInt(node.alltheVaribalesInRHS.get(trashForVar));
+                    } catch (Exception e) {
+                        right = nodeValue.get(node.alltheVaribalesInRHS.get(trashForVar));
                     }
-                    else
-                    {
-                        value-=nodeValue.get(node.alltheVaribalesInRHS.get(trash).toString());;
-                        
-                    }
-                    trash++;
+                left = obj.operation(left, currentToken, right);
+                trash++;
+                if (trash==node.operation.size()) {
+                    break;
                 }
-                else if(node.operation=="*")
-                {
-                    value*=nodeValue.get(node.alltheVaribalesInRHS.get(size-1).toString());
-                }
-                else 
-                {
-                    if(trash==0)
-                    {
-
-                        value=nodeValue.get(node.alltheVaribalesInRHS.get(trash).toString());
-                    }
-                    else
-                    {
-                        value/=nodeValue.get(node.alltheVaribalesInRHS.get(trash).toString());;
-                        
-                    }
-                    trash++;
-                }
-                size--;
+                currentToken= node.operation.get(trash);
+                trashForVar++;
             }
+            value=left;
+            
         }
         nodeValue.put(varName, value);
     }
     public void visitPrintStatement(printStatmentNode node)
     {
-        System.out.println(nodeValue.get(node.varName));
+       System.out.println(nodeValue.get(node.varName));
     }
 }

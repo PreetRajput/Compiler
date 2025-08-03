@@ -3,15 +3,12 @@ import java.util.List;
 
 public class varDecNode extends Node{
     public String varName;
-    public String operation;
-    public int i;
-    List<String> firstNumVal=new ArrayList<String>();
+    List<String> operation= new ArrayList<String>();
     List<String> alltheVaribalesInRHS= new ArrayList<String>();
-    varDecNode(String varName, String operation, List<String> firstNumVal, List<String> alltheVaribalesInRHS)
+    varDecNode(String varName, List<String> operation,List<String> alltheVaribalesInRHS)
     {
         this.varName= varName;
-        this.operation= operation;
-        this.firstNumVal= new ArrayList<>(firstNumVal);
+        this.operation= new ArrayList<>(operation);
         this.alltheVaribalesInRHS= new ArrayList<>(alltheVaribalesInRHS);
     }
     @Override
@@ -19,7 +16,7 @@ public class varDecNode extends Node{
     {
        
             
-            if (operation!=null) 
+            if (operation.size()!=0)
             {
               
                     return "let" + varName+ "=" +alltheVaribalesInRHS+ ""+operation;
@@ -27,7 +24,7 @@ public class varDecNode extends Node{
             }
             else
             {
-                return "let" + varName+ "=" +firstNumVal;
+                return "let" + varName+ "=" +alltheVaribalesInRHS;
             }
     }
     

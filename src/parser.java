@@ -7,8 +7,7 @@ public class parser
     public int pos= 0;
     StringBuilder valueOfIdentifier = new StringBuilder();
     String varName= null;
-    String operation= null;
-    List<String> allTheVarVal=  new ArrayList<String>();
+    List<String> operation= new ArrayList<String>();
     List<String> allTheVariablesInRHS= new ArrayList<String>();
     List<Node> allNodesList= new ArrayList<Node>();
                 
@@ -26,30 +25,32 @@ public class parser
             if (tokens.get(pos).type==token.Type.LET)
              {
                 
-                pos++;//1 7 12
-
-                forIdentifier();
-                forEqualsTo();
-                valueOfIdentifier();
-                nextLine();   
-
-            }
-            else if(tokens.get(pos).type==token.Type.PRINT)
-            {
+                 pos++;//1 7 12
+                 
+                 forIdentifier();
+                 forEqualsTo();
+                 valueOfIdentifier();
+                 nextLine("varDecNode");   
+                
+                 
+                }
+                else if(tokens.get(pos).type==token.Type.PRINT)
+                {
                 pos++; // 19
                 leftParen();
                 forIdentifier();
                 rightParen();
-           }
-           else if(tokens.get(pos).type==token.Type.EOF)
-           {
+                nextLine("printStatementNode");   
+
+
+            }
+            else if(tokens.get(pos).type==token.Type.EOF)
+            {
                 
                pos++; //22
                break;
            }
         }
-        
-        // Add a default return to satisfy the compiler
         return allNodesList;
     } 
     
@@ -85,12 +86,20 @@ public class parser
 
             while (tokens.get(pos).type==token.Type.NUMBER) 
             {
-             
-
                             valueOfIdentifier.append(tokens.get(pos).value);
                             pos++; // 5 10
+                            if(tokens.get(pos).type==token.Type.OPERATOR)
+                                    {
+                
+                                            operation.add(tokens.get(pos).value);
+                                            pos++;  // 16   
+                                            allTheVariablesInRHS.add(valueOfIdentifier.toString());
+                                            valueOfIdentifier.delete(0, valueOfIdentifier.length());
+                                           
+                                    }
             }
-            allTheVarVal.add(valueOfIdentifier.toString());
+              allTheVariablesInRHS.add(valueOfIdentifier.toString());
+
         }
         
         else if(tokens.get(pos).type==token.Type.IDENTIFIER)
@@ -103,13 +112,25 @@ public class parser
                 if(tokens.get(pos).type==token.Type.OPERATOR)
                     {
 
-                            operation= tokens.get(pos).value;
+                            operation.add(tokens.get(pos).value);
                             pos++;  // 16   
                            
                     }
-
+                    while (tokens.get(pos).type==token.Type.NUMBER ) 
+                    {
+                     
+                        allTheVariablesInRHS.add(tokens.get(pos).value);
+                        pos++; // 15 17
+                        if(tokens.get(pos).type==token.Type.OPERATOR)
+                            {
+        
+                                    operation.add(tokens.get(pos).value);
+                                    pos++;  // 16   
+                                   
+                            }
+                    }
             }
-                nextLine();
+                nextLine("varDecNode");
         }
 
 
@@ -117,24 +138,34 @@ public class parser
     }
                 
     
-                public void nextLine()
+                public void nextLine(String typeOfNode)
                 {
-                    if (tokens.get(pos).type==token.Type.NEXTLINE) 
-                            {
-                                allNodesList.add(new varDecNode(varName, operation, allTheVarVal,allTheVariablesInRHS));
-                                allTheVarVal.clear();
-                                allTheVariablesInRHS.clear();
-                                valueOfIdentifier.delete(0, valueOfIdentifier.length());
-                                pos++; //6 11 18
-
-                            }
-                    else if(tokens.get(pos).type==token.Type.OPERATOR)
-                            {
-                                    operation= tokens.get(pos).value;
-                                    pos++;   
-
-
-                            }
+                    if (typeOfNode.equalsIgnoreCase("varDecNode")) {
+                        
+                        if (tokens.get(pos).type==token.Type.NEXTLINE) 
+                                {
+                                    allNodesList.add(new varDecNode(varName, operation,allTheVariablesInRHS));
+                                    allTheVariablesInRHS.clear();
+                                    operation.clear();
+                                    valueOfIdentifier.delete(0, valueOfIdentifier.length());
+                                    pos++; //6 11 18
+                                    }
+                        else if(tokens.get(pos).type==token.Type.OPERATOR)
+                                {
+                                        operation.add(tokens.get(pos).value);
+                                        pos++;   
+    
+    
+                                }
+                    }
+                    else if (typeOfNode.equalsIgnoreCase("printStatementNode"))
+                    {
+                        
+                                    allNodesList.add( new printStatmentNode(varName));
+                                    pos++; //6 11 18
+    
+                       
+                    }
                 }
     
     
@@ -149,7 +180,6 @@ public class parser
     {
                  if (tokens.get(pos).type==token.Type.RIGHT_PAREN) 
                 {
-                    allNodesList.add( new printStatmentNode(varName));
                     pos++; //21
                 }
     }

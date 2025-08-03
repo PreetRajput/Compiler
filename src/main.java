@@ -26,7 +26,7 @@ public class main {
             evaluater obj3 = new evaluater(Nodes);
            
         } catch (Exception e) {
-            System.err.println("crazy error" + e.getMessage());
+             System.err.println("crazy error" + e.getMessage());
              e.printStackTrace();
         }
     }
